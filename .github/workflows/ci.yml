@@ -1,0 +1,34 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.0.x
+            9.0.x
+
+      - name: Restore dependencies
+        run: dotnet restore StadiumAnalytics.slnx
+
+      - name: Build
+        run: dotnet build StadiumAnalytics.slnx --configuration Release --no-restore
+
+      - name: Test
+        run: dotnet test StadiumAnalytics.slnx --configuration Release --no-build --verbosity normal
