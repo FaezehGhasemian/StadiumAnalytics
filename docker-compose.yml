@@ -1,0 +1,76 @@
+services:
+  rabbitmq:
+    image: rabbitmq:3.13-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  postgres:
+    image: postgres:16-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=stadium
+      - POSTGRES_PASSWORD=stadium
+      - POSTGRES_DB=stadium
+    volumes:
+      - stadium-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U stadium -d stadium"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  api:
+    build:
+      context: .
+      dockerfile: src/services/StadiumAnalytics.Api/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - RabbitMq__HostName=rabbitmq
+      - ConnectionStrings__Default=Host=postgres;Port=5432;Database=stadium;Username=stadium;Password=stadium
+      - ASPNETCORE_ENVIRONMENT=Development
+    restart: unless-stopped
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+
+  consumer:
+    build:
+      context: .
+      dockerfile: src/services/StadiumAnalytics.Consumer/Dockerfile
+    environment:
+      - RabbitMq__HostName=rabbitmq
+      - ConnectionStrings__Default=Host=postgres;Port=5432;Database=stadium;Username=stadium;Password=stadium
+      - DOTNET_ENVIRONMENT=Production
+    restart: unless-stopped
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+
+  simulator:
+    build:
+      context: .
+      dockerfile: src/services/StadiumAnalytics.Simulator/Dockerfile
+    environment:
+      - RabbitMq__HostName=rabbitmq
+      - DOTNET_ENVIRONMENT=Production
+    restart: unless-stopped
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+
+volumes:
+  stadium-pgdata:

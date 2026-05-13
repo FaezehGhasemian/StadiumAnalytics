@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-StadiumAnalytics.Simulator-3b74b5ec-a14f-4302-8170-0c0d58b055d8</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
+    <PackageReference Include="Serilog.Extensions.Hosting" Version="8.0.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="8.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- The Simulator only needs the eventing abstractions and the RabbitMQ publisher.
+         It does not depend on persistence (no DbContext) — the consumer owns that. -->
+    <ProjectReference Include="..\..\libraries\StadiumAnalytics.Application\StadiumAnalytics.Application.csproj" />
+    <ProjectReference Include="..\..\libraries\StadiumAnalytics.Infrastructure\StadiumAnalytics.Infrastructure.csproj" />
+  </ItemGroup>
+</Project>

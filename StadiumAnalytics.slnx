@@ -1,0 +1,22 @@
+<Solution>
+  <Folder Name="/src/">
+  </Folder>
+  <Folder Name="/src/libraries/">
+    <Project Path="src/libraries/StadiumAnalytics.Application/StadiumAnalytics.Application.csproj" />
+    <Project Path="src/libraries/StadiumAnalytics.Domain/StadiumAnalytics.Domain.csproj" />
+    <Project Path="src/libraries/StadiumAnalytics.Infrastructure/StadiumAnalytics.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/src/services/">
+    <Project Path="src/services/StadiumAnalytics.Api/StadiumAnalytics.Api.csproj" />
+    <Project Path="src/services/StadiumAnalytics.Consumer/StadiumAnalytics.Consumer.csproj" />
+    <Project Path="src/services/StadiumAnalytics.Simulator/StadiumAnalytics.Simulator.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/StadiumAnalytics.Domain.UnitTests/StadiumAnalytics.Domain.UnitTests.csproj" />
+    <Project Path="tests/StadiumAnalytics.Application.UnitTests/StadiumAnalytics.Application.UnitTests.csproj" />
+    <Project Path="tests/StadiumAnalytics.Infrastructure.UnitTests/StadiumAnalytics.Infrastructure.UnitTests.csproj" />
+    <Project Path="tests/StadiumAnalytics.Simulator.UnitTests/StadiumAnalytics.Simulator.UnitTests.csproj" />
+    <Project Path="tests/StadiumAnalytics.Consumer.UnitTests/StadiumAnalytics.Consumer.UnitTests.csproj" />
+    <Project Path="tests/StadiumAnalytics.IntegrationTests/StadiumAnalytics.IntegrationTests.csproj" />
+  </Folder>
+</Solution>
